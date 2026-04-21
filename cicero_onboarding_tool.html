@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cicero — Find Out What Your Case Is Worth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream:   #FAFAF8;
+  --cream2:  #F0EDE6;
+  --navy:    #1E3A5C;
+  --navy2:   #2A4E72;
+  --teal:    #3A6EA8;
+  --teal2:   #2A5E98;
+  --teal-bg: #E8F0F8;
+  --gold:    #C9893A;
+  --gold-bg: #FBF3E8;
+  --muted:   #6B5A4A;
+  --border:  #D4C4B0;
+  --white:   #FFFFFF;
+  --sky:     #6A9FCC;
+  --sage:    #5A8A6A;
+  --font-display: 'Lora', serif;
+  --font-body:    'Nunito', sans-serif;
+  --shadow-sm: 0 2px 8px rgba(30,58,92,0.08);
+  --shadow-md: 0 4px 20px rgba(30,58,92,0.12);
+  --shadow-lg: 0 8px 40px rgba(30,58,92,0.16);
+}
+
+html, body {
+  min-height: 100%;
+  background: var(--cream);
+  color: var(--navy);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── SHARED LAYOUT ─────────────────────── */
+.screen { display: none; }
+.screen.active { display: flex; flex-direction: column; min-height: 100vh; }
+
+/* ─── LANDING ─────────────────────────── */
+#screen-landing {
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  background: var(--white);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+#screen-landing::before {
+  content: '';
+  position: absolute;
+  top: -120px; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 400px;
+  background: radial-gradient(ellipse, rgba(58,110,168,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.land-logo {
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px;
+  margin-bottom: 40px;
+  animation: rise 0.5s ease both;
+}
+.land-logo-icon {
+  width: 44px; height: 44px;
+  background: var(--teal);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.land-logo-icon svg { width: 22px; height: 22px; }
+.land-logo-name {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--navy);
+  letter-spacing: 0.04em;
+}
+
+.land-headline {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--navy);
+  max-width: 580px;
+  margin: 0 auto 20px;
+  animation: rise 0.5s 0.08s ease both;
+}
+.land-headline em { font-style: italic; color: var(--teal); }
+
+.land-sub {
+  font-size: 19px;
+  color: var(--muted);
+  max-width: 440px;
+  margin: 0 auto 48px;
+  font-weight: 400;
+  line-height: 1.6;
+  animation: rise 0.5s 0.14s ease both;
+}
+
+.land-pills {
+  display: flex; flex-wrap: wrap;
+  gap: 10px; justify-content: center;
+  margin-bottom: 48px;
+  animation: rise 0.5s 0.2s ease both;
+}
+.land-pill {
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  padding: 8px 18px;
+  font-size: 14px;
+  color: var(--navy2);
+  font-weight: 600;
+  display: flex; align-items: center; gap: 6px;
+}
+.land-pill span { color: var(--teal); font-size: 16px; }
+
+.start-btn {
+  background: var(--teal);
+  color: white;
+  font-family: var(--font-body);
+  font-size: 19px;
+  font-weight: 700;
+  padding: 20px 52px;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba(58,110,168,0.3);
+  animation: rise 0.5s 0.26s ease both;
+}
+.start-btn:hover {
+  background: var(--teal2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(58,110,168,0.4);
+}
+
+.land-trust {
+  margin-top: 20px;
+  font-size: 13px;
+  color: var(--muted);
+  animation: rise 0.5s 0.3s ease both;
+}
+.land-trust strong { color: var(--navy); font-weight: 600; }
+
+/* ─── WIZARD ──────────────────────────── */
+#screen-wizard {
+  background: var(--cream);
+  align-items: center;
+}
+
+.wizard-header {
+  width: 100%;
+  background: var(--white);
+  border-bottom: 1.5px solid var(--border);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.wiz-logo {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--navy);
+  display: flex; align-items: center; gap: 8px;
+}
+.wiz-logo-dot {
+  width: 10px; height: 10px;
+  background: var(--teal);
+  border-radius: 50%;
+}
+
+.wiz-progress-wrap {
+  flex: 1;
+  max-width: 300px;
+  margin: 0 24px;
+}
+.wiz-progress-bar {
+  height: 5px;
+  background: var(--cream2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.wiz-progress-fill {
+  height: 100%;
+  background: var(--teal);
+  border-radius: 3px;
+  transition: width 0.4s cubic-bezier(.4,0,.2,1);
+}
+.wiz-step-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 5px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.wiz-skip {
+  font-size: 13px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-weight: 600;
+}
+
+/* question card */
+.question-stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  width: 100%;
+}
+
+.question-card {
+  width: 100%;
+  max-width: 600px;
+  animation: slideIn 0.35s cubic-bezier(.4,0,.2,1) both;
+}
+
+.q-eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 14px;
+}
+
+.q-text {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 4vw, 38px);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.q-hint {
+  font-size: 16px;
+  color: var(--muted);
+  margin-bottom: 32px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* answer options */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.options.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.opt-btn {
+  width: 100%;
+  background: var(--white);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  padding: 20px 24px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.18s;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+}
+.opt-btn:hover {
+  border-color: var(--teal);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+.opt-btn.selected {
+  border-color: var(--teal);
+  background: var(--teal-bg);
+  box-shadow: 0 0 0 3px rgba(58,110,168,0.12), var(--shadow-sm);
+}
+
+.opt-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+  width: 44px;
+  text-align: center;
+  line-height: 1;
+}
+
+.opt-text-wrap { flex: 1; }
+.opt-label {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--navy);
+  display: block;
+  line-height: 1.3;
+}
+.opt-sub {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 400;
+  margin-top: 2px;
+  display: block;
+}
+
+.opt-check {
+  width: 22px; height: 22px;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.18s;
+}
+.opt-btn.selected .opt-check {
+  background: var(--teal);
+  border-color: var(--teal);
+}
+.opt-btn.selected .opt-check::after {
+  content: '';
+  display: block;
+  width: 6px; height: 10px;
+  border: 2px solid white;
+  border-top: none; border-left: none;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+/* text input question */
+.text-input-wrap {
+  background: var(--white);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  padding: 20px 24px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s;
+}
+.text-input-wrap:focus-within { border-color: var(--teal); }
+.text-q-input {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--navy);
+  border: none;
+  outline: none;
+  background: transparent;
+  line-height: 1.5;
+  resize: none;
+  min-height: 80px;
+}
+.text-q-input::placeholder { color: #B0B8C4; }
+
+/* nav buttons */
+.q-nav {
+  margin-top: 28px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.btn-back {
+  background: none;
+  border: 2px solid var(--border);
+  border-radius: 100px;
+  padding: 14px 28px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.btn-back:hover { border-color: var(--navy); color: var(--navy); }
+
+.btn-next {
+  flex: 1;
+  background: var(--teal);
+  color: white;
+  border: none;
+  border-radius: 100px;
+  padding: 16px 32px;
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s;
+  box-shadow: 0 4px 16px rgba(58,110,168,0.25);
+  opacity: 0.4;
+  pointer-events: none;
+}
+.btn-next.enabled {
+  opacity: 1;
+  pointer-events: all;
+}
+.btn-next.enabled:hover {
+  background: var(--teal2);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(58,110,168,0.35);
+}
+
+/* ─── BRIDGE (transition) ────────────── */
+#screen-bridge {
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  background: var(--white);
+  text-align: center;
+}
+
+.bridge-icon {
+  width: 80px; height: 80px;
+  background: var(--teal-bg);
+  border: 2px solid rgba(58,110,168,0.2);
+  border-radius: 24px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 32px;
+  font-size: 36px;
+  animation: rise 0.4s ease both;
+}
+
+.bridge-headline {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 4vw, 38px);
+  font-weight: 600;
+  color: var(--navy);
+  max-width: 500px;
+  margin: 0 auto 16px;
+  animation: rise 0.4s 0.08s ease both;
+}
+
+.bridge-sub {
+  font-size: 17px;
+  color: var(--muted);
+  max-width: 420px;
+  margin: 0 auto 40px;
+  line-height: 1.65;
+  animation: rise 0.4s 0.14s ease both;
+}
+
+/* summary chips */
+.summary-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  max-width: 560px;
+  margin: 0 auto 40px;
+  animation: rise 0.4s 0.2s ease both;
+}
+.sum-chip {
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: var(--navy2);
+  font-weight: 600;
+  display: flex; align-items: center; gap: 6px;
+}
+.sum-chip-dot {
+  width: 8px; height: 8px;
+  background: var(--teal);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.bridge-btn {
+  background: var(--teal);
+  color: white;
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 700;
+  padding: 18px 48px;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(58,110,168,0.3);
+  transition: all 0.2s;
+  animation: rise 0.4s 0.26s ease both;
+}
+.bridge-btn:hover {
+  background: var(--teal2);
+  transform: translateY(-2px);
+}
+
+/* ─── CHAT ────────────────────────────── */
+#screen-chat {
+  background: var(--cream);
+}
+
+.chat-header {
+  background: var(--white);
+  border-bottom: 1.5px solid var(--border);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.chat-avatar {
+  width: 40px; height: 40px;
+  background: var(--teal);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.chat-header-info { flex: 1; }
+.chat-header-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.chat-header-status {
+  font-size: 12px;
+  color: var(--teal);
+  font-weight: 600;
+  display: flex; align-items: center; gap: 5px;
+}
+.status-dot {
+  width: 6px; height: 6px;
+  background: var(--teal);
+  border-radius: 50%;
+}
+
+.chat-value-badge {
+  background: var(--gold-bg);
+  border: 1.5px solid rgba(200,134,10,0.2);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold);
+  transition: all 0.4s;
+  min-width: 80px;
+  text-align: center;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto;
+  scroll-behavior: smooth;
+}
+.chat-messages::-webkit-scrollbar { width: 4px; }
+.chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* bubbles */
+.cmsg { display: flex; gap: 10px; animation: rise 0.3s ease both; }
+.cmsg.user { flex-direction: row-reverse; }
+
+.cmsg-av {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-family: var(--font-display);
+}
+.cmsg.ai .cmsg-av { background: var(--teal); color: white; }
+.cmsg.user .cmsg-av { background: var(--navy); color: white; font-size: 10px; font-family: var(--font-body); }
+
+.cmsg-bubble {
+  max-width: calc(100% - 44px);
+  padding: 14px 18px;
+  border-radius: 18px;
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 400;
+}
+.cmsg.ai .cmsg-bubble {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-top-left-radius: 4px;
+  color: var(--navy);
+  box-shadow: var(--shadow-sm);
+}
+.cmsg.user .cmsg-bubble {
+  background: var(--teal);
+  color: white;
+  border-top-right-radius: 4px;
+}
+
+/* typing */
+.typing-bubble {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 18px;
+  border-top-left-radius: 4px;
+  padding: 16px 20px;
+  display: flex; gap: 5px; align-items: center;
+  box-shadow: var(--shadow-sm);
+}
+.tdot {
+  width: 7px; height: 7px;
+  background: var(--teal);
+  border-radius: 50%;
+  animation: bounce 1.2s infinite;
+}
+.tdot:nth-child(2) { animation-delay: 0.2s; }
+.tdot:nth-child(3) { animation-delay: 0.4s; }
+
+/* chips */
+.chat-chips {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  padding-left: 44px;
+  animation: rise 0.3s 0.1s ease both;
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto;
+}
+.cchip {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  padding: 9px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--navy2);
+  cursor: pointer;
+  transition: all 0.18s;
+  font-family: var(--font-body);
+}
+.cchip:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-bg); }
+
+/* input */
+.chat-input-area {
+  background: var(--white);
+  border-top: 1.5px solid var(--border);
+  padding: 14px 16px 20px;
+  flex-shrink: 0;
+}
+.chat-input-row {
+  display: flex; gap: 10px; align-items: flex-end;
+  max-width: 700px;
+  margin: 0 auto;
+  background: var(--cream);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  padding: 10px 10px 10px 18px;
+  transition: border-color 0.2s;
+}
+.chat-input-row:focus-within { border-color: var(--teal); }
+#chat-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--navy);
+  resize: none;
+  min-height: 24px;
+  max-height: 120px;
+  line-height: 1.5;
+}
+#chat-input::placeholder { color: var(--border); }
+
+.chat-send {
+  width: 38px; height: 38px;
+  background: var(--teal);
+  border: none; border-radius: 10px;
+  cursor: pointer; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.18s;
+}
+.chat-send:hover { background: var(--teal2); }
+.chat-send:disabled { background: var(--border); cursor: not-allowed; }
+.chat-send svg { width: 16px; height: 16px; fill: white; }
+
+.chat-input-note {
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 8px;
+  max-width: 700px;
+  margin-left: auto; margin-right: auto;
+}
+
+/* ─── RESULT CARD (in chat) ───────────── */
+.result-card {
+  background: var(--white);
+  border: 2px solid var(--teal);
+  border-radius: 20px;
+  padding: 24px;
+  max-width: 480px;
+  box-shadow: var(--shadow-md);
+  animation: rise 0.4s ease both;
+}
+.rc-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 8px;
+}
+.rc-value {
+  font-family: var(--font-display);
+  font-size: 36px;
+  color: var(--navy);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.rc-tranche {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+.rc-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--cream2);
+}
+.rc-row:last-child { border-bottom: none; }
+.rc-row-label { color: var(--muted); }
+.rc-row-val { font-weight: 700; color: var(--navy); }
+.rc-row-val.good { color: var(--teal); }
+.rc-cta {
+  width: 100%;
+  background: var(--teal);
+  color: white;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 700;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: background 0.18s;
+}
+.rc-cta:hover { background: var(--teal2); }
+
+/* ─── ANIMATIONS ──────────────────────── */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes bounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-6px); }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════ LANDING ══════════════════════════════ -->
+<div id="screen-landing" class="screen active">
+  <div class="land-logo">
+    <div class="land-logo-icon" style="background:transparent;padding:0;overflow:visible">
+      <svg width="44" height="50" viewBox="0 0 84 94" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="4" width="72" height="66" rx="15" fill="#1E3A5C"/>
+        <polygon points="12,68 34,68 20,79" fill="#1E3A5C"/>
+        <line x1="22" y1="24" x2="58" y2="24" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+        <circle cx="40" cy="24" r="5" fill="white"/>
+        <line x1="40" y1="24" x2="40" y2="46" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+        <rect x="28" y="46" width="24" height="5" rx="2.5" fill="white"/>
+        <line x1="22" y1="24" x2="22" y2="34" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
+        <line x1="14" y1="34" x2="30" y2="34" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M 14 34 C 14 43 30 43 30 34" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+        <line x1="58" y1="24" x2="58" y2="34" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
+        <line x1="50" y1="34" x2="66" y2="34" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M 50 34 C 50 43 66 43 66 34" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <span class="land-logo-name">CICERO</span>
+  </div>
+
+  <h1 class="land-headline">Were you hurt?<br><em>Get a real offer in 24–72 hours.</em></h1>
+  <p class="land-sub">Answer 9 simple questions. No documents needed. We'll tell you what your case is worth — and make you a real settlement offer without a lawyer taking 33–40%.</p>
+
+  <div class="land-stats" style="display:flex;gap:32px;justify-content:center;flex-wrap:wrap;margin-bottom:36px">
+    <div style="text-align:center">
+      <div style="font-family:'Lora',serif;font-size:28px;font-weight:600;color:var(--navy)">95%</div>
+      <div style="font-size:13px;color:var(--muted)">of PI cases settle out of court</div>
+    </div>
+    <div style="width:1px;background:var(--border);align-self:stretch"></div>
+    <div style="text-align:center">
+      <div style="font-family:'Lora',serif;font-size:28px;font-weight:600;color:var(--navy)">33–40%</div>
+      <div style="font-size:13px;color:var(--muted)">average attorney fee</div>
+    </div>
+    <div style="width:1px;background:var(--border);align-self:stretch"></div>
+    <div style="text-align:center">
+      <div style="font-family:'Lora',serif;font-size:28px;font-weight:600;color:var(--teal)">24–72 hrs</div>
+      <div style="font-size:13px;color:var(--muted)">to a real Cicero offer</div>
+    </div>
+  </div>
+
+  <div class="land-pills">
+    <div class="land-pill"><span>⏱</span> Takes 3 minutes</div>
+    <div class="land-pill"><span>🔒</span> Private &amp; confidential</div>
+    <div class="land-pill"><span>💰</span> 100% free</div>
+    <div class="land-pill"><span>✓</span> No obligation</div>
+  </div>
+
+  <button class="start-btn" onclick="showWizard()">Get my free case estimate →</button>
+  <p class="land-trust">Cicero is not a law firm. No attorney-client relationship is created. <strong>Your information is never sold.</strong></p>
+</div>
+
+<!-- ══════════════════════════════════ WIZARD ══════════════════════════════ -->
+<div id="screen-wizard" class="screen">
+  <div class="wizard-header">
+  <div class="wiz-logo">
+    <svg width="22" height="26" viewBox="0 0 84 94" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="4" width="72" height="66" rx="15" fill="#1E3A5C"/>
+      <polygon points="12,68 34,68 20,79" fill="#1E3A5C"/>
+      <line x1="22" y1="24" x2="58" y2="24" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+      <circle cx="40" cy="24" r="5" fill="white"/>
+      <line x1="40" y1="24" x2="40" y2="46" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+      <rect x="28" y="46" width="24" height="5" rx="2.5" fill="white"/>
+      <line x1="22" y1="24" x2="22" y2="34" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
+      <line x1="14" y1="34" x2="30" y2="34" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+      <path d="M 14 34 C 14 43 30 43 30 34" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+      <line x1="58" y1="24" x2="58" y2="34" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
+      <line x1="50" y1="34" x2="66" y2="34" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+      <path d="M 50 34 C 50 43 66 43 66 34" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+    </svg>
+    CICERO
+  </div>
+    <div class="wiz-progress-wrap">
+      <div class="wiz-progress-bar"><div class="wiz-progress-fill" id="prog-fill" style="width:12%"></div></div>
+      <div class="wiz-step-label" id="prog-label">Question 1 of 9</div>
+    </div>
+    <button class="wiz-skip" onclick="skipToChat()">Skip</button>
+  </div>
+
+  <div class="question-stage">
+    <div class="question-card" id="q-card">
+      <!-- rendered by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ BRIDGE ══════════════════════════════ -->
+<div id="screen-bridge" class="screen">
+  <div class="bridge-icon">✅</div>
+  <h2 class="bridge-headline">Good — we have the basics.</h2>
+  <p class="bridge-sub">Now Cicero will ask a few follow-up questions to sharpen your estimate. For most cases, we can make you a real offer within 24–72 hours — no lawyer required.</p>
+  <div class="summary-chips" id="summary-chips"></div>
+
+  <div style="background:var(--teal-bg);border:1.5px solid rgba(58,110,168,0.2);border-radius:16px;padding:20px 28px;max-width:480px;margin:0 auto 36px;text-align:left">
+    <div style="font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin-bottom:10px">How the offer works</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="width:24px;height:24px;background:var(--teal);border-radius:50%;color:white;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+        <div style="font-size:14px;color:var(--navy2)"><strong>Right now:</strong> Cicero gives you an instant estimate range based on your answers.</div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="width:24px;height:24px;background:var(--teal);border-radius:50%;color:white;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
+        <div style="font-size:14px;color:var(--navy2)"><strong>24–72 hours:</strong> Upload one document (ER notes or doctor visit summary) and Cicero makes a firm offer.</div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="width:24px;height:24px;background:var(--teal);border-radius:50%;color:white;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
+        <div style="font-size:14px;color:var(--navy2)"><strong>Accept or pass:</strong> No pressure. We show you exactly what you'd net with Cicero vs. a law firm.</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="bridge-btn" onclick="showChat()">Continue to my estimate →</button>
+</div>
+
+<!-- ══════════════════════════════════ CHAT ══════════════════════════════ -->
+<div id="screen-chat" class="screen">
+  <div class="chat-header">
+    <div class="chat-avatar">
+      <svg width="22" height="26" viewBox="0 0 84 94" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="4" width="72" height="66" rx="15" fill="white" fill-opacity="0.25"/>
+        <polygon points="12,68 34,68 20,79" fill="white" fill-opacity="0.25"/>
+        <line x1="22" y1="24" x2="58" y2="24" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+        <circle cx="40" cy="24" r="5" fill="white"/>
+        <line x1="40" y1="24" x2="40" y2="46" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+        <rect x="28" y="46" width="24" height="5" rx="2.5" fill="white"/>
+        <line x1="22" y1="24" x2="22" y2="34" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
+        <line x1="14" y1="34" x2="30" y2="34" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M 14 34 C 14 43 30 43 30 34" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+        <line x1="58" y1="24" x2="58" y2="34" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
+        <line x1="50" y1="34" x2="66" y2="34" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M 50 34 C 50 43 66 43 66 34" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="chat-header-info">
+      <div class="chat-header-name">Cicero</div>
+      <div class="chat-header-status"><div class="status-dot"></div> Reviewing your case</div>
+    </div>
+    <div class="chat-value-badge" id="chat-value-badge">Estimating…</div>
+  </div>
+  <div class="chat-messages" id="chat-messages"></div>
+  <div class="chat-input-area">
+    <div class="chat-input-row">
+      <textarea id="chat-input" placeholder="Type your answer here…" rows="1"
+        onkeydown="handleChatKey(event)" oninput="autoResize(this)"></textarea>
+      <button class="chat-send" id="chat-send-btn" onclick="sendChatMessage()">
+        <svg viewBox="0 0 16 16"><path d="M2 8l12-6-5 6 5 6z"/></svg>
+      </button>
+    </div>
+    <div class="chat-input-note">Cicero is not a law firm and does not provide legal advice. Free &amp; confidential.</div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════
+// QUESTIONS
+// ════════════════════════════════════════════
+const QUESTIONS = [
+  {
+    id: 'incident_type',
+    eyebrow: 'Question 1 of 9',
+    text: 'What happened to you?',
+    hint: 'Pick the option that best describes your situation.',
+    type: 'choice',
+    layout: 'grid',
+    options: [
+      { icon: '🚗', label: 'Car or truck accident', sub: 'Any type of vehicle collision', value: 'auto' },
+      { icon: '🏥', label: 'Slip, trip or fall', sub: 'Fell on someone\'s property', value: 'slip_fall' },
+      { icon: '🏗️', label: 'Hurt at work', sub: 'On-the-job injury', value: 'workplace' },
+      { icon: '💊', label: 'Medical mistake', sub: 'Doctor, hospital or medication error', value: 'medical_mal' },
+      { icon: '🚶', label: 'Pedestrian or bike', sub: 'Hit while walking or cycling', value: 'pedestrian' },
+      { icon: '•••', label: 'Something else', sub: 'Another type of injury', value: 'other' },
+    ]
+  },
+  {
+    id: 'when',
+    eyebrow: 'Question 2 of 9',
+    text: 'When did this happen?',
+    hint: 'The timing affects how much time you have to file a claim.',
+    type: 'choice',
+    layout: 'list',
+    options: [
+      { icon: '📅', label: 'In the last 30 days',        sub: 'Very recent',                    value: 'recent_30' },
+      { icon: '📅', label: '1 to 6 months ago',          sub: 'Still relatively fresh',         value: '1_6mo' },
+      { icon: '📅', label: '6 months to a year ago',     sub: 'Getting further back',           value: '6_12mo' },
+      { icon: '⚠️',  label: 'More than a year ago',      sub: 'Time limits may be a concern',   value: 'over_1yr' },
+    ]
+  },
+  {
+    id: 'fault',
+    eyebrow: 'Question 3 of 9',
+    text: 'Who do you think was at fault?',
+    hint: 'Be honest — this helps us give you an accurate picture.',
+    type: 'choice',
+    layout: 'list',
+    options: [
+      { icon: '👉', label: 'The other person or company',     sub: 'Clearly not my fault',           value: 'clear_other' },
+      { icon: '🤝', label: 'Mostly them, but I played a part', sub: 'Shared responsibility',          value: 'shared' },
+      { icon: '❓', label: 'I\'m honestly not sure',           sub: 'Still figuring it out',          value: 'unsure' },
+      { icon: '⚖️',  label: 'It\'s being disputed',            sub: 'The other side is pushing back', value: 'disputed' },
+    ]
+  },
+  {
+    id: 'injury_severity',
+    eyebrow: 'Question 4 of 9',
+    text: 'How seriously were you hurt?',
+    hint: 'Think about the worst part of your injury.',
+    type: 'choice',
+    layout: 'list',
+    options: [
+      { icon: '🩹', label: 'Minor — bruising, soreness',   sub: 'No broken bones or surgery',      value: 'minor' },
+      { icon: '🦾', label: 'Moderate — needed real care',  sub: 'X-rays, stitches, physical therapy', value: 'moderate' },
+      { icon: '🏥', label: 'Serious — hospitalized',       sub: 'Surgery, hospital stay, fractures', value: 'serious' },
+      { icon: '♿', label: 'Life-changing or permanent',   sub: 'Disability, ongoing impairment',    value: 'severe' },
+    ]
+  },
+  {
+    id: 'medical_care',
+    eyebrow: 'Question 5 of 9',
+    text: 'Did you get medical treatment?',
+    hint: 'Medical records are one of the most important parts of any claim.',
+    type: 'choice',
+    layout: 'list',
+    options: [
+      { icon: '🚑', label: 'Yes — went to the ER',            sub: 'Ambulance or emergency room',   value: 'er' },
+      { icon: '🏥', label: 'Yes — urgent care or my doctor',  sub: 'Outpatient visit',              value: 'outpatient' },
+      { icon: '🔄', label: 'Yes — ongoing treatment',         sub: 'PT, specialist, or follow-ups', value: 'ongoing' },
+      { icon: '❌', label: 'Not yet',                         sub: 'Haven\'t seen a doctor',        value: 'none' },
+    ]
+  },
+  {
+    id: 'medical_bills',
+    eyebrow: 'Question 6 of 9',
+    text: 'Roughly how much are your medical bills so far?',
+    hint: 'An estimate is fine — we\'re not asking for receipts.',
+    type: 'choice',
+    layout: 'list',
+    options: [
+      { icon: '💵', label: 'Under $2,000',          sub: 'Minor treatment costs',       value: 'under_2k' },
+      { icon: '💵', label: '$2,000 – $10,000',       sub: 'Moderate medical costs',      value: '2k_10k' },
+      { icon: '💵', label: '$10,000 – $50,000',      sub: 'Significant care required',   value: '10k_50k' },
+      { icon: '💵', label: 'Over $50,000',           sub: 'Major or ongoing treatment',  value: 'over_50k' },
+      { icon: '❓', label: 'Not sure yet',           sub: 'Bills still coming in',       value: 'unsure' },
+    ]
+  },
+  {
+    id: 'lost_wages',
+    eyebrow: 'Question 7 of 9',
+    text: 'Did you miss any work because of this?',
+    hint: 'Lost wages are a separate part of your claim.',
+    type: 'choice',
+    layout: 'list',
+    options: [
+      { icon: '✅', label: 'No — I kept working',         sub: 'No lost income',                value: 'none' },
+      { icon: '📆', label: 'A few days',                  sub: 'Minor time off',                value: 'few_days' },
+      { icon: '🗓️',  label: 'Several weeks or more',      sub: 'Significant lost income',       value: 'weeks' },
+      { icon: '🚫', label: 'I still can\'t work',         sub: 'Ongoing lost wages',            value: 'ongoing' },
+    ]
+  },
+  {
+    id: 'lawyer',
+    eyebrow: 'Question 8 of 9',
+    text: 'Have you spoken to a lawyer yet?',
+    hint: 'This doesn\'t affect your estimate — we just want to understand where you are.',
+    type: 'choice',
+    layout: 'list',
+    options: [
+      { icon: '🙅', label: 'No — not yet',                      sub: 'I\'m just exploring my options',         value: 'none' },
+      { icon: '💬', label: 'Talked to one, didn\'t hire',        sub: 'Had a free consultation',               value: 'consulted' },
+      { icon: '✍️',  label: 'Yes — I have a lawyer',             sub: 'Already have representation',           value: 'has_lawyer' },
+    ]
+  },
+  {
+    id: 'body_part',
+    eyebrow: 'Question 9 of 9',
+    text: 'Where were you hurt?',
+    hint: 'The specific part of your body that was injured matters for your case value.',
+    type: 'choice',
+    layout: 'grid',
+    options: [
+      { icon: '🧠', label: 'Head or brain',        sub: 'Concussion, TBI, facial injury',    value: 'head' },
+      { icon: '🦴', label: 'Neck or spine',         sub: 'Whiplash, disc injury, herniation', value: 'spine' },
+      { icon: '🦵', label: 'Leg, knee or hip',      sub: 'Fracture, ligament, joint injury',  value: 'leg' },
+      { icon: '💪', label: 'Shoulder or arm',       sub: 'Rotator cuff, fracture, nerve',     value: 'arm' },
+      { icon: '🫀', label: 'Internal or chest',     sub: 'Organ damage, rib injury',          value: 'internal' },
+      { icon: '🩹', label: 'Multiple areas',        sub: 'Injuries to more than one area',    value: 'multiple' },
+    ]
+  }
+];
+
+// ════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════
+let currentQ = 0;
+const answers = {};
+const chatHistory = [];
+let chatBusy = false;
+
+// ════════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function showWizard() {
+  showScreen('screen-wizard');
+  renderQuestion(0);
+}
+
+function skipToChat() {
+  buildBridge();
+  showScreen('screen-bridge');
+}
+
+function showChat() {
+  showScreen('screen-chat');
+  startChat();
+}
+
+// ════════════════════════════════════════════
+// WIZARD RENDER
+// ════════════════════════════════════════════
+function renderQuestion(idx) {
+  currentQ = idx;
+  const q = QUESTIONS[idx];
+  const pct = Math.round(((idx + 1) / QUESTIONS.length) * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = `Question ${idx + 1} of ${QUESTIONS.length}`;
+
+  const card = document.getElementById('q-card');
+  card.innerHTML = '';
+  card.style.animation = 'none';
+  requestAnimationFrame(() => { card.style.animation = ''; });
+
+  // eyebrow
+  const eyebrow = el('div', 'q-eyebrow', q.eyebrow);
+  card.appendChild(eyebrow);
+
+  // question text
+  const qtext = el('h2', 'q-text', q.text);
+  card.appendChild(qtext);
+
+  // hint
+  if (q.hint) card.appendChild(el('p', 'q-hint', q.hint));
+
+  // options
+  const opts = document.createElement('div');
+  opts.className = `options${q.layout === 'grid' ? ' grid' : ''}`;
+
+  q.options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn' + (answers[q.id] === opt.value ? ' selected' : '');
+    btn.innerHTML = `
+      <div class="opt-icon">${opt.icon}</div>
+      <div class="opt-text-wrap">
+        <span class="opt-label">${opt.label}</span>
+        ${opt.sub ? `<span class="opt-sub">${opt.sub}</span>` : ''}
+      </div>
+      <div class="opt-check"></div>
+    `;
+    btn.onclick = () => selectOption(q.id, opt.value, btn, opts);
+    opts.appendChild(btn);
+  });
+
+  card.appendChild(opts);
+
+  // nav
+  const nav = document.createElement('div');
+  nav.className = 'q-nav';
+  if (idx > 0) {
+    const back = document.createElement('button');
+    back.className = 'btn-back';
+    back.textContent = '← Back';
+    back.onclick = () => renderQuestion(idx - 1);
+    nav.appendChild(back);
+  }
+  const next = document.createElement('button');
+  next.className = 'btn-next' + (answers[q.id] ? ' enabled' : '');
+  next.id = 'btn-next';
+  next.textContent = idx === QUESTIONS.length - 1 ? 'See my estimate →' : 'Next →';
+  next.onclick = () => advanceWizard();
+  nav.appendChild(next);
+  card.appendChild(nav);
+}
+
+function selectOption(qid, value, btnEl, container) {
+  container.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+  btnEl.classList.add('selected');
+  answers[qid] = value;
+  const next = document.getElementById('btn-next');
+  if (next) next.classList.add('enabled');
+}
+
+function advanceWizard() {
+  if (!answers[QUESTIONS[currentQ].id]) return;
+  if (currentQ < QUESTIONS.length - 1) {
+    renderQuestion(currentQ + 1);
+  } else {
+    buildBridge();
+    showScreen('screen-bridge');
+  }
+}
+
+// ════════════════════════════════════════════
+// BRIDGE
+// ════════════════════════════════════════════
+const ANSWER_LABELS = {
+  auto: 'Car accident', slip_fall: 'Slip & fall', workplace: 'Workplace injury',
+  medical_mal: 'Medical malpractice', pedestrian: 'Pedestrian/bike', other: 'Other injury',
+  recent_30: 'Last 30 days', '1_6mo': '1–6 months ago', '6_12mo': '6–12 months ago', over_1yr: 'Over 1 year ago',
+  clear_other: 'Clear fault', shared: 'Shared fault', unsure: 'Fault unclear', disputed: 'Disputed',
+  minor: 'Minor injury', moderate: 'Moderate injury', serious: 'Serious injury', severe: 'Life-changing',
+  er: 'ER visit', outpatient: 'Doctor visit', ongoing: 'Ongoing treatment', none: '—',
+  under_2k: 'Bills <$2K', '2k_10k': 'Bills $2K–$10K', '10k_50k': 'Bills $10K–$50K', over_50k: 'Bills >$50K',
+  few_days: 'Few days missed', weeks: 'Weeks missed', has_lawyer: 'Has attorney', consulted: 'Consulted attorney',
+  head: 'Head/brain injury', spine: 'Neck/spine injury', leg: 'Leg/knee/hip injury',
+  arm: 'Shoulder/arm injury', internal: 'Internal/chest injury', multiple: 'Multiple injuries'
+};
+
+function buildBridge() {
+  const chips = document.getElementById('summary-chips');
+  chips.innerHTML = '';
+  Object.entries(answers).forEach(([k, v]) => {
+    const label = ANSWER_LABELS[v];
+    if (label && label !== '—') {
+      const chip = document.createElement('div');
+      chip.className = 'sum-chip';
+      chip.innerHTML = `<div class="sum-chip-dot"></div>${label}`;
+      chips.appendChild(chip);
+    }
+  });
+}
+
+// ════════════════════════════════════════════
+// CHAT
+// ════════════════════════════════════════════
+const SYSTEM_PROMPT = (ctx) => `You are Cicero, an AI personal injury settlement assistant. Cicero is a standalone platform — not a law firm, not affiliated with any specific law firm. You help injured people understand what their case is worth and whether Cicero can help them settle faster and keep more money than they would with a traditional attorney. You are NOT a lawyer. You do not give legal advice.
+
+TONE: Warm, conversational, plain English. Like a knowledgeable friend. Short messages — 2-4 sentences. Never use legal jargon without immediately explaining it. Acknowledge the person's experience with brief empathy before moving on.
+
+WHAT YOU ALREADY KNOW (from their intake quiz):
+${ctx}
+
+IMPORTANT — DOCUMENTS: Do NOT ask the user to upload or gather any documents right now. That happens later. Focus only on asking questions to build the estimate.
+
+YOUR JOB: Ask 3-5 focused follow-up questions to sharpen the estimate. Cover these in order of importance:
+1. Specific body part and any diagnosis they were given (e.g. "herniated disc", "fractured wrist") — this is the most important factor
+2. Whether there were any gaps in their treatment, or if treatment is still ongoing
+3. The at-fault party's insurance company if they know it
+4. Whether a police report or incident report was filed
+5. Any prior injury to the same body part in the last 5 years
+
+KEY INSIGHT: The insurance industry uses software called Colossus to value claims. It weights: injury type, specific diagnosis, continuity of treatment, and whether injuries are objectively documented (X-ray, MRI) vs. soft tissue only. When asking about injuries, gently help the user recall any specific terms their doctor used — this directly affects their case value.
+
+TRANSPARENCY RULE: At the result stage, always show the user what they would net with Cicero vs. a traditional law firm. Traditional attorneys take 33-40%. Cicero charges approximately 10-15% for T1-T2 cases. The user deserves to see this comparison clearly.
+
+After 4-6 exchanges, produce a case assessment in EXACTLY this format:
+
+---CICERO_RESULT---
+RANGE: [$X – $Y]
+TRANCHE: [T1|T2|T3|T4|T5]
+ROUTING: [SELL|SETTLE|HYBRID|REFER|PREMIUM]
+TIMELINE: [X–Y months]
+CICERO_NET: [$X]
+LAWYER_NET: [$X]
+SUMMARY: [2 plain English sentences about their case and what Cicero recommends]
+---END_RESULT---
+
+Five-tranche guide:
+T1 = $0–$10K → SELL (disputed liability, minor injury, no documentation)
+T2 = $10K–$100K → SETTLE (clear liability, documented injury, Cicero handles it in 24-72 hrs after one document)
+T3 = $100K–$250K → HYBRID (significant injury, Cicero builds demand package, attorney reviews)
+T4 = $250K–$1M → REFER (serious injury, refer to partner law firm with Cicero case summary)
+T5 = $1M+ → PREMIUM (catastrophic, wrongful death, medical malpractice — premium law firm referral)
+
+For CICERO_NET: use ~87% of range midpoint. For LAWYER_NET: use ~63% of range midpoint.
+
+Begin by warmly acknowledging what they shared and asking your first follow-up. Be specific — reference their actual answers by name.`;
+
+function buildContext() {
+  const lines = [];
+  const map = {
+    incident_type: 'Incident type', when: 'When it happened', fault: 'Fault assessment',
+    injury_severity: 'Injury severity', body_part: 'Body part injured',
+    medical_care: 'Medical care received',
+    medical_bills: 'Medical bills', lost_wages: 'Lost wages', lawyer: 'Attorney status'
+  };
+  Object.entries(answers).forEach(([k, v]) => {
+    if (map[k]) lines.push(`- ${map[k]}: ${ANSWER_LABELS[v] || v}`);
+  });
+  return lines.length ? lines.join('\n') : 'No quiz answers captured yet.';
+}
+
+function addChatMessage(role, content) {
+  const messages = document.getElementById('chat-messages');
+  removeChips();
+
+  const wrap = document.createElement('div');
+  wrap.className = `cmsg ${role}`;
+  const av = document.createElement('div');
+  av.className = 'cmsg-av';
+  if (role === 'ai') {
+    av.innerHTML = `<svg width="20" height="22" viewBox="0 0 84 94" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="72" height="66" rx="15" fill="white" fill-opacity=".25"/><polygon points="12,68 34,68 20,79" fill="white" fill-opacity=".25"/><line x1="22" y1="24" x2="58" y2="24" stroke="white" stroke-width="4" stroke-linecap="round"/><circle cx="40" cy="24" r="5" fill="white"/><line x1="40" y1="24" x2="40" y2="46" stroke="white" stroke-width="4" stroke-linecap="round"/><rect x="28" y="46" width="24" height="5" rx="2.5" fill="white"/><line x1="22" y1="24" x2="22" y2="34" stroke="white" stroke-width="3" stroke-linecap="round"/><line x1="14" y1="34" x2="30" y2="34" stroke="white" stroke-width="4" stroke-linecap="round"/><path d="M 14 34 C 14 43 30 43 30 34" fill="none" stroke="white" stroke-width="4" stroke-linecap="round"/><line x1="58" y1="24" x2="58" y2="34" stroke="white" stroke-width="3" stroke-linecap="round"/><line x1="50" y1="34" x2="66" y2="34" stroke="white" stroke-width="4" stroke-linecap="round"/><path d="M 50 34 C 50 43 66 43 66 34" fill="none" stroke="white" stroke-width="4" stroke-linecap="round"/></svg>`;
+  } else {
+    av.textContent = 'You';
+  }
+
+  if (typeof content === 'string') {
+    const bubble = document.createElement('div');
+    bubble.className = 'cmsg-bubble';
+    bubble.textContent = content;
+    wrap.appendChild(av);
+    wrap.appendChild(bubble);
+  } else {
+    wrap.appendChild(av);
+    wrap.appendChild(content);
+  }
+
+  messages.appendChild(wrap);
+  messages.scrollTop = messages.scrollHeight;
+  return wrap;
+}
+
+function showTyping() {
+  const messages = document.getElementById('chat-messages');
+  const wrap = document.createElement('div');
+  wrap.className = 'cmsg ai';
+  wrap.id = 'typing-wrap';
+  const av = document.createElement('div');
+  av.className = 'cmsg-av';
+  av.innerHTML = `<svg width="20" height="22" viewBox="0 0 84 94" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="72" height="66" rx="15" fill="white" fill-opacity=".25"/><polygon points="12,68 34,68 20,79" fill="white" fill-opacity=".25"/><line x1="22" y1="24" x2="58" y2="24" stroke="white" stroke-width="4" stroke-linecap="round"/><circle cx="40" cy="24" r="5" fill="white"/><line x1="40" y1="24" x2="40" y2="46" stroke="white" stroke-width="4" stroke-linecap="round"/><rect x="28" y="46" width="24" height="5" rx="2.5" fill="white"/><line x1="22" y1="24" x2="22" y2="34" stroke="white" stroke-width="3" stroke-linecap="round"/><line x1="14" y1="34" x2="30" y2="34" stroke="white" stroke-width="4" stroke-linecap="round"/><path d="M 14 34 C 14 43 30 43 30 34" fill="none" stroke="white" stroke-width="4" stroke-linecap="round"/><line x1="58" y1="24" x2="58" y2="34" stroke="white" stroke-width="3" stroke-linecap="round"/><line x1="50" y1="34" x2="66" y2="34" stroke="white" stroke-width="4" stroke-linecap="round"/><path d="M 50 34 C 50 43 66 43 66 34" fill="none" stroke="white" stroke-width="4" stroke-linecap="round"/></svg>`;
+  const bubble = document.createElement('div');
+  bubble.className = 'typing-bubble';
+  for (let i = 0; i < 3; i++) { const d = document.createElement('div'); d.className = 'tdot'; bubble.appendChild(d); }
+  wrap.appendChild(av); wrap.appendChild(bubble);
+  messages.appendChild(wrap);
+  messages.scrollTop = messages.scrollHeight;
+  return wrap;
+}
+
+function removeChips() {
+  document.querySelectorAll('.chat-chips').forEach(c => c.remove());
+}
+
+function addChips(text) {
+  const lc = text.toLowerCase();
+  let chips = [];
+  if (lc.includes('body part') || lc.includes('specific') || lc.includes('injury') || lc.includes('diagnos')) {
+    chips = ['Neck and back', 'Head or concussion', 'Broken bone', 'Knee or shoulder', 'Multiple injuries'];
+  } else if (lc.includes('surgery') || lc.includes('operation') || lc.includes('surgical')) {
+    chips = ['Yes, had surgery', 'Surgery recommended', 'No surgery needed', 'Not sure yet'];
+  } else if (lc.includes('insurance') || lc.includes('carrier') || lc.includes('policy')) {
+    chips = ['State Farm', 'Allstate', 'GEICO', 'Progressive', 'Other / don\'t know'];
+  } else if (lc.includes('police') || lc.includes('report') || lc.includes('witness')) {
+    chips = ['Yes, police report filed', 'Incident report made', 'Witnesses present', 'No report made'];
+  } else if (lc.includes('prior') || lc.includes('before') || lc.includes('previous') || lc.includes('pre-existing')) {
+    chips = ['No prior injuries', 'Yes, same area', 'Different injury before', 'Not sure'];
+  } else if (lc.includes('record') || lc.includes('document') || lc.includes('bills')) {
+    chips = ['Yes, I have records', 'Still being collected', 'Not yet', 'Insurance is handling it'];
+  }
+  if (!chips.length) return;
+  const container = document.createElement('div');
+  container.className = 'chat-chips';
+  chips.forEach(label => {
+    const chip = document.createElement('button');
+    chip.className = 'cchip';
+    chip.textContent = label;
+    chip.onclick = () => { removeChips(); document.getElementById('chat-input').value = label; sendChatMessage(); };
+    container.appendChild(chip);
+  });
+  document.getElementById('chat-messages').after(container);
+  const msgs = document.getElementById('chat-messages');
+  msgs.parentNode.insertBefore(container, msgs.nextSibling);
+  msgs.scrollTop = msgs.scrollHeight;
+  // actually append below messages
+  msgs.appendChild(container);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+async function startChat() {
+  chatBusy = true;
+  const typing = showTyping();
+  try {
+    const ctx = buildContext();
+    const firstMsg = `Hello — just reviewing what you shared.`;
+    chatHistory.push({ role: 'user', content: firstMsg });
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: SYSTEM_PROMPT(ctx),
+        messages: chatHistory
+      })
+    });
+    const data = await res.json();
+    const raw = data.content?.map(b => b.text || '').join('') || '';
+    typing.remove();
+    chatHistory.push({ role: 'assistant', content: raw });
+    if (raw.includes('---CICERO_RESULT---')) {
+      handleResult(raw);
+    } else {
+      addChatMessage('ai', raw);
+      addChips(raw);
+    }
+  } catch { typing.remove(); addChatMessage('ai', "Let's start with the most important part — tell me more about your injury."); }
+  chatBusy = false;
+  document.getElementById('chat-send-btn').disabled = false;
+}
+
+async function sendChatMessage() {
+  if (chatBusy) return;
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  autoResize(input);
+  removeChips();
+  addChatMessage('user', text);
+  chatHistory.push({ role: 'user', content: text });
+  chatBusy = true;
+  document.getElementById('chat-send-btn').disabled = true;
+  const typing = showTyping();
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: SYSTEM_PROMPT(buildContext()),
+        messages: chatHistory
+      })
+    });
+    const data = await res.json();
+    const raw = data.content?.map(b => b.text || '').join('') || '';
+    typing.remove();
+    chatHistory.push({ role: 'assistant', content: raw });
+    if (raw.includes('---CICERO_RESULT---')) {
+      handleResult(raw);
+    } else {
+      addChatMessage('ai', raw);
+      addChips(raw);
+    }
+  } catch { typing.remove(); addChatMessage('ai', "Sorry about that — can you repeat that?"); }
+  chatBusy = false;
+  document.getElementById('chat-send-btn').disabled = false;
+}
+
+function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); advanceWizard(); } }
+function handleChatKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChatMessage(); } }
+function autoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 120) + 'px'; }
+
+// ════════════════════════════════════════════
+// RESULT CARD
+// ════════════════════════════════════════════
+function handleResult(raw) {
+  const get = key => { const m = raw.match(new RegExp(key + ':\\s*(.+)')); return m ? m[1].trim() : null; };
+  const [before] = raw.split('---CICERO_RESULT---');
+  if (before.trim()) addChatMessage('ai', before.trim());
+
+  const range = get('RANGE') || '—';
+  const tranche = get('TRANCHE') || 'T2';
+  const timeline = get('TIMELINE') || '3–6 months';
+  const ciceroNet = get('CICERO_NET') || '—';
+  const lawyerNet = get('LAWYER_NET') || '—';
+  const routing = get('ROUTING') || 'SETTLE';
+  const summary = get('SUMMARY') || '';
+
+  const trancheMap = {
+    T1: 'Tranche 1 — quick offer',
+    T2: 'Tranche 2 — Cicero settles',
+    T3: 'Tranche 3 — Cicero + attorney',
+    T4: 'Tranche 4 — law firm referral',
+    T5: 'Tranche 5 — premium referral'
+  };
+  const trancheTimingMap = {
+    T1: { timing: 'Same-day offer', doc: 'No documents needed to claim this offer', action: 'Claim your offer now' },
+    T2: { timing: '24–72 hour firm offer', doc: 'Upload one document — ER notes or a doctor visit summary — to confirm', action: 'Upload one document to confirm' },
+    T3: { timing: '5–10 day offer', doc: 'We\'ll guide you through collecting medical records and bills', action: 'Start document collection' },
+    T4: { timing: 'Standard timeline', doc: 'Cicero matches you with the right law firm and hands off your case summary', action: 'Get matched to a law firm' },
+    T5: { timing: 'Standard timeline', doc: 'Your case qualifies for premium legal representation through our partner network', action: 'Connect with our partner network' },
+  };
+  const tt = trancheTimingMap[tranche] || trancheTimingMap['T2'];
+
+  // update badge
+  const badge = document.getElementById('chat-value-badge');
+  badge.textContent = range;
+  badge.style.background = '#FBF3E8';
+  badge.style.color = '#C9893A';
+
+  // build result card
+  const card = document.createElement('div');
+  card.className = 'result-card';
+  card.innerHTML = `
+    <div class="rc-eyebrow">Your Cicero estimate</div>
+    <div class="rc-value">${range}</div>
+    <div class="rc-tranche">${trancheMap[tranche] || tranche}</div>
+    <div class="rc-row"><span class="rc-row-label">With a traditional lawyer (~37% fee)</span><span class="rc-row-val">${lawyerNet} net</span></div>
+    <div class="rc-row"><span class="rc-row-label">With Cicero (~13% fee)</span><span class="rc-row-val good">${ciceroNet} net</span></div>
+    <div class="rc-row"><span class="rc-row-label">Estimated timeline</span><span class="rc-row-val">${timeline}</span></div>
+    <div style="background:var(--teal-bg);border-radius:10px;padding:14px 16px;margin-top:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <div style="width:8px;height:8px;background:var(--teal);border-radius:50%;flex-shrink:0"></div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal)">Offer timing</div>
+      </div>
+      <div style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:4px">${tt.timing}</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.5">${tt.doc}</div>
+    </div>
+    ${summary ? `<div style="font-size:14px;color:var(--muted);line-height:1.6;margin-top:14px;padding-top:14px;border-top:1px solid var(--cream2)">${summary}</div>` : ''}
+    <button class="rc-cta" style="margin-top:18px">${tt.action} →</button>
+    <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:10px">No obligation. You can always choose a different path.</p>
+  `;
+
+  const messages = document.getElementById('chat-messages');
+  const wrap = document.createElement('div');
+  wrap.className = 'cmsg ai';
+  const av = document.createElement('div'); av.className = 'cmsg-av'; av.textContent = 'C';
+  wrap.appendChild(av); wrap.appendChild(card);
+  messages.appendChild(wrap);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+// ════════════════════════════════════════════
+// UTILS
+// ════════════════════════════════════════════
+function el(tag, cls, text) {
+  const e = document.createElement(tag);
+  e.className = cls;
+  if (text) e.textContent = text;
+  return e;
+}
+</script>
+</body>
+</html>
